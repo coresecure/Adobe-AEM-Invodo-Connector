@@ -1,0 +1,81 @@
+
+    Adobe AEM Invodo Connector
+
+    Copyright (C) 2011 Coresecure Inc.
+
+        Authors:    Alessandro Bonfatti
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+    ==================
+    ABOUT THIS PROJECT
+    ==================
+
+    This project is intended to work with Adobe CQ 5.5 and above.
+
+    This project was generated from the com.cqblueprints.archetypes:multi-module Maven Archetype.
+
+    More information on the generation process can be found here:
+
+    http://www.cqblueprints.com/xwiki/bin/view/Blue+Prints/The+CQ+Project+Maven+Archetype
+
+
+
+
+    ================
+    BUILD AND DEPLOY
+    ================
+
+    To build this project you will need access to the Adobe Maven Repository and also the CQ Blueprints Maven
+    Repository:
+
+    - Connecting to the CQ Blueprints Maven Repository
+      http://www.cqblueprints.com/xwiki/bin/view/Blue+Prints/Connecting+to+the+CQ+Blueprints+Repository
+
+    - Connecting to the Adobe Maven Repository
+      http://www.cqblueprints.com/xwiki/bin/view/Blue+Prints/Connecting+to+the+Adobe+Maven+Repository
+
+    Once the repositories are added to your maven configuration file, you can execute the following steps:
+
+    1) Clean previously generated files
+       $ mvn clean
+
+    2) Edit the pom.xml file instance configuration:
+       ...
+       <cq.host>172.16.91.137</cq.host>
+       <cq.port>4502</cq.port>
+       <cq.user>admin</cq.user>
+       <cq.password>admin</cq.password>
+       ...
+
+    3) Edit the configuration parameters under the invodo-config/src/main/content/jcr_root/apps/invodo/runmodes
+
+    4) Build and deploy the project
+
+       IMPORTANT: due to an issue with the 2.1.0 version of the maven-sling-plugin, the path specified by the
+       slingUrlSuffix parameter in the invodo-services pom.xml file will not be created automatically and so must
+       already exist in your CQ instance BEFORE trying to use the auto-deploy profile:
+
+       - Using CRXDE Lite: create /apps/invodo/install
+       - Using CURL:
+         $ curl -uadmin:admin 'http://localhost:4502/crx/server/crx.default/jcr%3aroot' -H 'Content-Type: multipart/form-data; boundary=crxde' -H 'Accept: */*' -H 'X-Requested-With: XMLHttpRequest' --data-binary $'--crxde\r\nContent-Disposition: form-data; name=":diff"\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n+/apps/invodo : {"jcr:primaryType":"nt:folder"}\r\n+/apps/invodo/install : {"jcr:primaryType":"nt:folder"}\r\n--crxde-- ' --compressed
+
+
+       $ mvn -Pauto-deploy install
+
+
+
+
+

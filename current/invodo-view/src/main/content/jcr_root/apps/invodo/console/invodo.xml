@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:mixinTypes="[cq:Console]"
+    jcr:primaryType="cq:Widget"
+    jcr:title="CQ5 Invodo"
+    sling:redirect="{Boolean}true"
+    sling:resourceType="invodo/components/tools/invodoadmin"
+    sling:vanityOrder="{Long}400"
+    sling:vanityPath="/invodo/admin"
+    consoleDescription="Manage Your Invodo Videos."
+    consoleTitle="Invodo"
+    iconClass="invodoadmin"
+    id="cq-invodo"
+    jsLibs="[]"
+    tabTitle="Invodo Assets"
+    xtype="siteadmin"/>

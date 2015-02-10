@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Panel"
+    title="Basic">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <basic
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <title
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Title"
+                    name="./jcr:title"
+                    xtype="textfield"/>
+                <hideinnav
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Hide in Navigation"
+                    inputValue="true"
+                    name="./hideInNav"
+                    type="checkbox"
+                    xtype="selection"/>
+            </items>
+        </basic>
+        <more_titles
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}true"
+            collapsible="{Boolean}true"
+            title="More Titles and Description"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <description
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Description"
+                    name="./jcr:description"
+                    xtype="textarea"/>
+            </items>
+        </more_titles>
+        <player_information
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}true"
+            collapsible="{Boolean}true"
+            title="Player Configuration"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <playerID
+                    jcr:primaryType="cq:Widget"
+                    allowBlank="false"
+                    fieldDescription=""
+                    fieldLabel="Player ID:"
+                    fieldSubLabel=""
+                    name="./playerID"
+                    xtype="textfield"/>
+                <playerKey
+                    jcr:primaryType="cq:Widget"
+                    allowBlank="false"
+                    fieldDescription=""
+                    fieldLabel="Player Key:"
+                    fieldSubLabel=""
+                    name="./playerKey"
+                    xtype="textfield"/>
+                <align
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Component Alignment:"
+                    name="./align"
+                    type="select"
+                    xtype="selection">
+                    <options jcr:primaryType="cq:WidgetCollection">
+                        <left
+                            jcr:primaryType="nt:unstructured"
+                            text="Left"
+                            value="left"/>
+                        <center
+                            jcr:primaryType="nt:unstructured"
+                            text="Center"
+                            value="center"/>
+                        <right
+                            jcr:primaryType="nt:unstructured"
+                            text="Right"
+                            value="right"/>
+                    </options>
+                </align>
+                <size
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Size"
+                    heightParameter="./height"
+                    widthParameter="./width"
+                    xtype="sizefield"/>
+            </items>
+        </player_information>
+    </items>
+</jcr:root>

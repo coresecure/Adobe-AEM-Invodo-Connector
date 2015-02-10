@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<workspaceFilter version="1.0">
+    <filter root="/apps/invodo">
+        <exclude pattern="/apps/invodo/install.*"/>
+        <exclude pattern="/apps/invodo/runmodes.*"/>
+    </filter>
+    <filter root="/etc/clientlibs/invodo"/>
+    <filter root="/libs/cq/gui/content/common/links/invodo"/>
+	<filter root="/etc/designs/cs/invodo">
+        <exclude pattern="/etc/designs/cs/invodo/jcr:content.*"/>
+    </filter>
+</workspaceFilter>

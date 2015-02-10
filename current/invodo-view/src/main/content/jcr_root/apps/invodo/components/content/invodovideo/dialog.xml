@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Dialog"
+    title="Dialog"
+    xtype="dialog">
+    <items jcr:primaryType="cq:TabPanel">
+        <items jcr:primaryType="cq:WidgetCollection">
+            <tab1
+                jcr:primaryType="cq:Panel"
+                title="General">
+                <items jcr:primaryType="cq:WidgetCollection">
+                    <comboPlayer
+                        jcr:primaryType="cq:Widget"
+                        allowBlank="false"
+                        fieldDescription=""
+                        fieldLabel="Video:"
+                        fieldSubLabel=""
+                        hiddenName="./videoPlayer"
+                        xtype="InvodoCombo"/>
+                    <size
+                        jcr:primaryType="cq:Widget"
+                        fieldLabel="Size"
+                        heightParameter="./height"
+                        widthParameter="./width"
+                        xtype="sizefield"/>
+                    <player_type
+                        jcr:primaryType="cq:Widget"
+                        collapsed="{Boolean}false"
+                        collapsible="{Boolean}false"
+                        xtype="dialogfieldset">
+                        <items jcr:primaryType="cq:WidgetCollection">
+                            <type
+                                jcr:primaryType="cq:Widget"
+                                fieldLabel="Type"
+                                name="./type"
+                                type="select"
+                                xtype="selection">
+                                <options jcr:primaryType="cq:WidgetCollection">
+                                    <inplayer
+                                        jcr:primaryType="nt:unstructured"
+                                        text="In Player"
+                                        value="inplayer"/>
+                                    <cta
+                                        jcr:primaryType="nt:unstructured"
+                                        text="CTA"
+                                        value="cta"/>
+                                    <spin
+                                        jcr:primaryType="nt:unstructured"
+                                        text="Spin"
+                                        value="spin"/>
+                                </options>
+                            </type>
+                            <mode
+                                jcr:primaryType="cq:Widget"
+                                fieldLabel="Mode"
+                                name="./mode"
+                                type="select"
+                                xtype="selection">
+                                <options jcr:primaryType="cq:WidgetCollection">
+                                    <embedded
+                                        jcr:primaryType="nt:unstructured"
+                                        text="Embedded"
+                                        value="embedded"/>
+                                    <spin
+                                        jcr:primaryType="nt:unstructured"
+                                        text="Overlay"
+                                        value="overlay"/>
+                                </options>
+                            </mode>
+                        </items>
+                    </player_type>
+                    <player_config
+                        jcr:primaryType="cq:Widget"
+                        collapsed="{Boolean}false"
+                        collapsible="{Boolean}false"
+                        xtype="dialogfieldset">
+                        <items jcr:primaryType="cq:WidgetCollection">
+                            <chromelessmode
+                                jcr:primaryType="cq:Widget"
+                                fieldLabel="Chromeless Mode"
+                                fieldValue="off"
+                                name="./isChromelessMode"
+                                type="checkbox"
+                                xtype="selection"/>
+                            <autoplay
+                                jcr:primaryType="cq:Widget"
+                                fieldLabel="Autoplay"
+                                fieldValue="off"
+                                name="./autoplay"
+                                type="checkbox"
+                                xtype="selection"/>
+                        </items>
+                    </player_config>
+                </items>
+            </tab1>
+            <ctaImage
+                jcr:primaryType="cq:Widget"
+                cropParameter="./ctaimage/imageCrop"
+                ddGroups="[media]"
+                fileNameParameter="./ctaimage/fileName"
+                fileReferenceParameter="./ctaimage/fileReference"
+                mapParameter="./ctaimage/imageMap"
+                name="./ctaimage/file"
+                requestSuffix="/ctaimage.img.png"
+                rotateParameter="./ctaimage/imageRotate"
+                title="Image"
+                xtype="html5smartimage"/>
+            <advanced
+                jcr:primaryType="cq:Widget"
+                title="Advanced CTA Image Settings"
+                xtype="panel">
+                <items jcr:primaryType="cq:WidgetCollection">
+                    <title
+                        jcr:primaryType="cq:Widget"
+                        fieldLabel="Title"
+                        name="./ctaimage/jcr:title"
+                        xtype="textfield"/>
+                    <alt
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="(leave empty to use the title defined above)"
+                        fieldLabel="Alt Text"
+                        name="./ctaimage/alt"
+                        xtype="textfield"/>
+                    <linkURL
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Drop files or pages from the Content Finder"
+                        fieldLabel="Link to"
+                        name="./ctaimage/linkURL"
+                        xtype="pathfield"/>
+                    <description
+                        jcr:primaryType="cq:Widget"
+                        fieldLabel="Description"
+                        name="./ctaimage/jcr:description"
+                        xtype="textarea"/>
+                    <size
+                        jcr:primaryType="cq:Widget"
+                        fieldLabel="Size"
+                        heightParameter="./ctaimage/height"
+                        widthParameter="./ctaimage/width"
+                        xtype="sizefield"/>
+                    <resType
+                        jcr:primaryType="cq:Widget"
+                        ignoreData="{Boolean}true"
+                        name="./ctaimage/sling:resourceType"
+                        value="foundation/components/image"
+                        xtype="hidden"/>
+                </items>
+            </advanced>
+        </items>
+    </items>
+</jcr:root>

@@ -1,0 +1,6 @@
+#base=js
+com.iskitz.ajile.1.2.1.flat.js
+jquery-1.2.6.pack.js
+jquery-ui-personalized-1.5.2.packed.js
+brcAdmin.js
+brcUI.js
