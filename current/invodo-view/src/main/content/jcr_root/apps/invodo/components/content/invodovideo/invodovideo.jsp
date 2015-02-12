@@ -21,13 +21,13 @@
 */
 %>
 <%@include file="/libs/foundation/global.jsp"%>
-<%@ page import="com.day.cq.wcm.api.components.DropTarget,java.util.UUID,com.coresecure.invodo.aem.ConfigurationUtil,com.day.cq.wcm.foundation.Image"%>
+<%@ page import="com.day.cq.wcm.api.components.DropTarget,java.util.UUID,com.coresecure.invodo.aem.*,com.day.cq.wcm.foundation.Image"%>
 <%
     UUID video_uuid = new UUID(64L,64L);
 	String VideoRandomID = new String(video_uuid.randomUUID().toString().replaceAll("-",""));
 
 	Image image = null;
-    String imageCTAData="";
+    String imageCTAData="/etc/designs/cs/invodo/InvodoExperiences/images/playbutton_black_64px.png";
     if (currentNode.hasNode("ctaimage")) {
         image = new Image(resourceResolver.getResource(currentNode.getNode("ctaimage").getPath()));
         if (image.hasContent()) imageCTAData = resourceResolver.map(image.getPath()+".img.png"+ image.getSuffix());
@@ -48,7 +48,7 @@
  </script>
 
 <%
-	if ("cta".equals(properties.get("type","inplayer"))) {
+	if ("cta".equals(properties.get("type","inplayer")) || "overlay".equals(properties.get("mode","embedded"))) {
 %>
 	<p id="<%=VideoRandomID%>"></p>
 <%

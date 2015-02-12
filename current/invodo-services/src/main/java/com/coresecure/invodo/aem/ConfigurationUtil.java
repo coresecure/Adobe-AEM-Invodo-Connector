@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Arrays;
-
+import javax.jcr.query.Query;
 
 import com.day.cq.commons.jcr.JcrUtil;
 import com.day.cq.wcm.api.*;
@@ -120,26 +120,27 @@ public class ConfigurationUtil {
                 query = "";
             }
 
-            String ActivatedPathQuery = "/jcr:root"+getStoragePath()+"//element(*, cq:Page)[jcr:contains(content_type, 'presentation')" + (query.trim().isEmpty() ? "" : " and jcr:contains(.,\""+query+"\")")+"]";
+            String ActivatedPathQuery = "SELECT * FROM [cq:PageContent] AS s WHERE ISDESCENDANTNODE(["+getStoragePath()+"/presentations])"+ (query.trim().isEmpty() ? " AND s.content_type = 'presentation'" : " AND CONTAINS(s.*,\""+query+"\")");///jcr:root"+getStoragePath()+"//element(*, cq:Page)[jcr:contains(content_type, 'presentation')" + (query.trim().isEmpty() ? "" : " and jcr:contains(.,\""+query+"\")")+"]";
             loggerVar.trace("Search : " + ActivatedPathQuery);
-            Iterator<Resource> resIterator = resourceResolver.findResources(ActivatedPathQuery,"xpath");
+            Iterator<Resource> resIterator = resourceResolver.findResources(ActivatedPathQuery,Query.JCR_SQL2);
 
             //NodeIterator pres_itr = existingItem.getNodes("presentation-*");
             long count = 0;
             while (resIterator.hasNext()) {
                 //Node videoPage = pres_itr.nextNode();
                 Resource itemRes = resIterator.next();
-                Node videoPage = itemRes.adaptTo(Node.class);
-                loggerVar.trace("Item : " + videoPage.getPath());
+                Node video = itemRes.adaptTo(Node.class);
+                loggerVar.trace("Item : " + video.getPath());
 
                 if ((startVal < 0 || count >= startVal) && (limit < 0 || count < startVal+limit)) {
-                    if (videoPage.hasNode("jcr:content")) {
-                        Node video = videoPage.getNode("jcr:content");
+                    //if (videoPage.hasNode("jcr:content")) {
+                    //    Node video = videoPage.getNode("jcr:content");
                         loggerVar.trace("video : " + video.getPath());
                         JSONObject itemJson = new JSONObject();
                         itemJson.put("id", video.getProperty("id").getString());
                         itemJson.put("rid", video.getProperty("rid").getString());
                         itemJson.put("durableId", video.getProperty("durableId").getString());
+                        itemJson.put("path", video.getProperty("durableId").getString());
                         itemJson.put("name", video.getProperty("name").getString());
                         itemJson.put("description", video.getProperty("description").getString());
                         JSONArray tags = new JSONArray();
@@ -155,7 +156,7 @@ public class ConfigurationUtil {
                         itemJson.put("tags", tags);
                         itemJson.put("thumbnail_image", video.getProperty("thumbnail_image").getString());
                         items.put(itemJson);
-                    }
+                    //}
                 }
                 count++;
             }

@@ -37,7 +37,7 @@
                  ],
     "items": [
 		CQ.wcm.ContentFinderTab.getQueryBoxConfig({
-            "id": "cfTab-Images-QueryBox",
+            "id": "cfTab-Invodo-QueryBox",
             /*"height": 95,*/
             "items": [
                 CQ.wcm.ContentFinderTab.getSuggestFieldConfig({"url": "/bin/wcm/contentfinder/suggestions.json/content/dam"})
@@ -101,9 +101,9 @@
             "reader": new CQ.Ext.data.JsonReader({
                 "root": "items",
                 "fields": [
-                    "id", "name", "durableId", "thumbnail_image", "url"
+                    "id", "name", "durableId", "path", "thumbnail_image", "url"
                 ],
-                "id": "id"
+                "id": "path"
                 
             })
         

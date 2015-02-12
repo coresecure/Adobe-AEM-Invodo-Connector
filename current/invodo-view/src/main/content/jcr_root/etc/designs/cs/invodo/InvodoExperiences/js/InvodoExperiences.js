@@ -20,7 +20,7 @@ invodoTools.init = function() {
 					var index;
 					for (index = 0; index < invodoTools.videos.length; ++index) {
     					var item = invodoTools.videos[index];
-                        if (item.type === "cta") {
+                        if (item.type === "cta" ||  item.mode === "overlay") {
                             Invodo.Widget.add({podId: item.podId, widgetId:item.widgetId, mode:"overlay", type:"inplayer", chromelessmode:item.chromelessmode, listensTo:"cta"+index});
 	                        Invodo.Widget.add({podId: item.podId, widgetId:"cta"+index, type:"cta", chromelessmode:item.chromelessmode, parentDomId:item.parentDomId, data:item.data});
                         } else {
