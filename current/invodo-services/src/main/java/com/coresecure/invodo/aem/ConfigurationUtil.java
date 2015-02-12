@@ -120,7 +120,7 @@ public class ConfigurationUtil {
                 query = "";
             }
 
-            String ActivatedPathQuery = "/jcr:root"+getStoragePath()+"//element(*, cq:Page)[jcr:contains(@jcr:content/content_type, 'presentation')" + (query.trim().isEmpty() ? "" : " and jcr:contains(.,\""+query+"\")")+"]";
+            String ActivatedPathQuery = "/jcr:root"+getStoragePath()+"//element(*, cq:Page)[jcr:contains(content_type, 'presentation')" + (query.trim().isEmpty() ? "" : " and jcr:contains(.,\""+query+"\")")+"]";
             loggerVar.trace("Search : " + ActivatedPathQuery);
             Iterator<Resource> resIterator = resourceResolver.findResources(ActivatedPathQuery,"xpath");
 

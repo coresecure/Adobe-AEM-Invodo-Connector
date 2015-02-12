@@ -1,5 +1,6 @@
 package com.coresecure.invodo.aem.webservices;
 
+import com.coresecure.invodo.aem.ConfigurationService;
 import com.coresecure.invodo.aem.ConfigurationUtil;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Properties;
@@ -21,6 +22,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.jackrabbit.api.security.user.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.jcr.Session;
 
 @Service
@@ -41,6 +45,7 @@ public class ListApi extends SlingAllMethodsServlet {
 
 
     }
+    private static Logger loggerVar = LoggerFactory.getLogger(ConfigurationService.class);
 
 
     public void api(final SlingHttpServletRequest request,
@@ -72,6 +77,7 @@ public class ListApi extends SlingAllMethodsServlet {
                     outWriter.write("{\"items\":[],\"results\":0,\"error\":2}");
                 }
             } catch (Exception e) {
+                loggerVar.error(org.apache.commons.lang.exception.ExceptionUtils.getStackTrace(e));
                 outWriter.write("{\"items\":[],\"results\":0,\"error\":1}");
             }
         } else {
@@ -86,6 +92,7 @@ public class ListApi extends SlingAllMethodsServlet {
                     outWriter.write("{\"items\":[],\"results\":0}");
                 }
             } catch (Exception e) {
+                loggerVar.error(org.apache.commons.lang.exception.ExceptionUtils.getStackTrace(e));
                 outWriter.write("{\"items\":[],\"results\":0}");
             }
         }
