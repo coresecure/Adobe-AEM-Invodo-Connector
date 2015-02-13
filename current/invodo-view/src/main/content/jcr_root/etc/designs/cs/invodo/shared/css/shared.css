@@ -30,3 +30,6 @@
 div .invodoadmin  {
     background-image:url(../../images/invodo-welcome.png);
 }
+#apps .invodoadmin {
+	background: url("../../images/invodo-welcome.png") no-repeat scroll 8px 4px transparent;
+}

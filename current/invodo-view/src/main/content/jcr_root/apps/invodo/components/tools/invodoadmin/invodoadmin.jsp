@@ -34,10 +34,14 @@
     com.day.cq.wcm.api.WCMMode,
     com.day.cq.wcm.api.components.Toolbar,
     com.day.cq.replication.ReplicationQueue,
-    com.day.cq.replication.AgentManager, java.util.Iterator" %><%
+    com.day.cq.replication.AgentManager, java.util.Iterator,com.day.cq.widget.WidgetExtensionProvider" %><%
 %><%@include file="/libs/foundation/global.jsp"%><%
+int debug = 0;
+WidgetExtensionProvider extensionProvider = sling.getService(WidgetExtensionProvider.class);
+String xtype = properties.get("xtype", "");
+    Session session = slingRequest.getResourceResolver().adaptTo(Session.class);
 
-
+    String extensionString = extensionProvider.getJsonString(xtype, session);
 %><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 <html>
 
@@ -50,6 +54,16 @@
     <cq:includeClientLib js="cs.invodo-bootstrap" />
     <cq:includeClientLib js="cs.invodo-admin-api" />
     <title>Invodo - Media API Application</title>
+    <script type="text/javascript">
+            CQ.Ext.onReady(function() {
+                var debug = <%= debug %>;
+                var extensionString = <%= extensionString %>;
+                var fct = function() {
+                    CQ.Util.build("<%= slingRequest.getContextPath() %><%= currentNode.getPath() %>.infinity.json", null, null, debug, extensionString);
+                };
+                window.setTimeout(fct, 1);
+            });
+        </script>
 </head>
 
 <body>

@@ -6,7 +6,8 @@
         <exclude pattern="/apps/invodo/runmodes.*"/>
     </filter>
     <filter root="/etc/clientlibs/invodo"/>
-    <filter root="/libs/cq/gui/content/common/links/invodo"/>
+    <filter root="/apps/cq/gui/content/common/links/invodo"/>
+    <filter root="/apps/cq/core/content/nav/invodo"/>
 	<filter root="/etc/designs/cs/invodo">
         <exclude pattern="/etc/designs/cs/invodo/jcr:content.*"/>
     </filter>
