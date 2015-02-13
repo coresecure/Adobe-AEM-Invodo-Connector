@@ -24,6 +24,7 @@ import java.io.Serializable;
         @Property(name="affiliate_id", label="Affiliate ID", description="Affiliate ID", value=""),
         @Property(name="api_key", label="Api Key", description="Api Key", value=""),
         @Property(name="storage_path", label="Storage Path", description="Storage Path", value="/etc/storage/invodo"),
+        @Property(name="js_path", label="Invodo JS Path", description="Invodo JS Path", value="//e.invodo.com/4.0/s/hpotter.com.js"),
         @Property(name="is_cron_active", label="CRON Enable", description="Enable CRON", boolValue=false),
         @Property(name="cron_scheduler", label="CRON Scheduler", description="Scheduler CRON", value="0 5 0 ? * SUN"),
         @Property(name="is_admin_allowed", label="Admin can refresh data", description="Allow AEM 'admin' user to refresh Invodo data", boolValue=false),
@@ -66,7 +67,7 @@ public class ConfigurationService implements com.coresecure.invodo.aem.Configura
             final Runnable job1 = new Runnable() {
                 public void run() {
                     loggerVar.debug("Runnign " + jobName);
-                    ConfigurationUtil.cacheVideos();
+                    ConfigurationUtil.refreshChannel();
                     loggerVar.debug(jobName + " stopped");
                 }
             };
@@ -76,6 +77,7 @@ public class ConfigurationService implements com.coresecure.invodo.aem.Configura
                 job1.run();
             }
         }
+
     }
     public String getAffiliateId() {
         // TODO Auto-generated method stub
@@ -88,6 +90,10 @@ public class ConfigurationService implements com.coresecure.invodo.aem.Configura
 
     public String getStoragePath() {
         return (String) getProperties().get("storage_path");
+    }
+
+    public String getJSPath() {
+        return (String) getProperties().get("js_path");
     }
 
     public String getCRON() {

@@ -10,8 +10,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.sling:org.apache.sling.commons.scheduler:2.3.4" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.quartz-scheduler:quartz:2.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: c3p0:c3p0:0.9.1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.apache.felix.framework:2.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.osgi.core:1.4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.felix:org.osgi.compendium:1.4.0" level="project" />
@@ -49,5 +47,10 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.day.commons:day-commons-text:1.1.8" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.day.cq:cq-security-api:5.6.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.jackrabbit:jackrabbit-api:2.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.1" level="project" />
+    <orderEntry type="library" name="Maven: javax.ejb:ejb-api:3.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.jms:javax.jms-api:2.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.xml:jaxrpc-api:1.1" level="project" />
   </component>
 </module>

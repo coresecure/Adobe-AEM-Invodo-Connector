@@ -26,6 +26,7 @@ import com.day.cq.wcm.api.*;
 
 
 import javax.jcr.*;
+import java.util.Date;
 import org.apache.sling.jcr.api.SlingRepository;
 import com.day.text.*;
 
@@ -51,6 +52,10 @@ public class ConfigurationUtil {
     public static String getApiKey() {
         ConfigurationService configurationService = getSlingSettingService();
         return configurationService.getApiKey();
+    }
+    public static String getJSPath(){
+        ConfigurationService configurationService = getSlingSettingService();
+        return configurationService.getJSPath();
     }
     public static String getStoragePath() {
         ConfigurationService configurationService = getSlingSettingService();
@@ -239,7 +244,7 @@ public class ConfigurationUtil {
     public static JSONObject getVideosByPage(int page, int limit) {
         return getVideos(page, limit, true);
     }
-    public static boolean cacheVideos(){
+    private static boolean cacheVideos(){
         boolean result = false;
         SlingRepository repository = getSlingRepository();
         Session session = null;
@@ -379,7 +384,7 @@ public class ConfigurationUtil {
         }
         return result;
     }
-    public static boolean cachePublications(){
+    private static boolean cachePublications(){
         boolean result = false;
         SlingRepository repository = getSlingRepository();
         Session session = null;
@@ -542,7 +547,7 @@ public class ConfigurationUtil {
         }
         return result;
     }
-    public static boolean cacheProducts(){
+    private static boolean cacheProducts(){
         boolean result = false;
         SlingRepository repository = getSlingRepository();
         Session session = null;
@@ -586,6 +591,58 @@ public class ConfigurationUtil {
                 session.save(); //maximum every 1000 nodes
             }
             session.save();
+
+        } catch (Exception je) {
+            //to-do
+            loggerVar.error(org.apache.commons.lang.exception.ExceptionUtils.getStackTrace(je));
+        } finally {
+            if (session != null) {
+                session.logout();
+            }
+            if (repository != null) repository = null;
+        }
+        return result;
+    }
+    public static boolean refreshChannel(){
+        return refreshChannel(false);
+    }
+    public static boolean refreshChannel(boolean override){
+        boolean result = false;
+        boolean runCron = override;
+        SlingRepository repository = getSlingRepository();
+        Session session = null;
+        long currentTime = (new Date()).getTime();
+        try {
+            session = repository.loginAdministrative(null);
+            Node storageNode = null;
+            try {
+                storageNode = session.getNode(getStoragePath());
+            } catch(Exception e) {
+                //node not exists
+            }
+            if (storageNode == null || !storageNode.hasProperty("last_exec_cron")) {
+                runCron = true;
+                loggerVar.debug("New Storage");
+            } else {
+                long lastExecTime = storageNode.getProperty("last_exec_cron").getLong();
+                long deltaTime = (lastExecTime - currentTime) / 3600000;
+                if (deltaTime > 12) {
+                    runCron = true;
+                    loggerVar.debug("Storage older than 12hrs: " + deltaTime);
+                } else {
+                    loggerVar.debug("Storage newer than 12hrs: " + deltaTime);
+                }
+            }
+            if (runCron) {
+                cacheVideos();
+                cacheProducts();
+                cachePublications();
+                if (!override) {
+                    storageNode = session.getNode(getStoragePath());
+                    storageNode.setProperty("last_exec_cron", currentTime);
+                    session.save();
+                }
+            }
 
         } catch (Exception je) {
             //to-do

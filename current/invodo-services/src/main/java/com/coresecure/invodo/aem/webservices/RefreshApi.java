@@ -69,9 +69,7 @@ public class RefreshApi extends SlingAllMethodsServlet {
                     }
                 }
                 if (is_authorized) {
-                    ConfigurationUtil.cacheVideos();
-                    ConfigurationUtil.cacheProducts();
-                    ConfigurationUtil.cachePublications();
+                    ConfigurationUtil.refreshChannel(true);
                 }
             }
         } catch (RepositoryException e) {

@@ -38,7 +38,7 @@
 
 <script type="text/javascript">
 
-    var filepath = "//e.invodo.com/4.0/s/hpotter.com.js";
+    var filepath = "<%=ConfigurationUtil.getJSPath()%>";
 	invodoTools.filepath=filepath;
     invodoTools.pageName="<%=currentPage.getName()%>";
     invodoTools.pageType="<%=currentPage.getTemplate().getName()%>";

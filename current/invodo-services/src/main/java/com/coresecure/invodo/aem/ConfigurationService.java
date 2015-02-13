@@ -11,5 +11,6 @@ public interface ConfigurationService {
     public Boolean isAdminRefreshAllowed();
     public String[] getRefresherGroups();
     public List<String> getRefresherGroupsList();
+    public String getJSPath();
     public Boolean isGroupAllowed(String groupName);
 }
