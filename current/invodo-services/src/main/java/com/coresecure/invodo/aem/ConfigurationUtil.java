@@ -55,7 +55,8 @@ public class ConfigurationUtil {
     }
     public static String getJSPath(){
         ConfigurationService configurationService = getSlingSettingService();
-        return configurationService.getJSPath();
+        String path = (configurationService.getJSPath().endsWith("/") ? configurationService.getJSPath():configurationService.getJSPath()+"/")+getAffiliateId()+".js";
+        return path;
     }
     public static String getStoragePath() {
         ConfigurationService configurationService = getSlingSettingService();
@@ -217,15 +218,32 @@ public class ConfigurationUtil {
             JSONObject json = JsonReader.readJsonFromUrl(url);
             JSONArray raw_items =  json.getJSONArray("items");
             for(int i = 0; i<raw_items.length();i++){
-                JSONObject itemJson = new JSONObject();
-                itemJson.put("id",startVal+i);
-                itemJson.put("rid",raw_items.getJSONObject(i).get("id"));
-                itemJson.put("durableId", raw_items.getJSONObject(i).get("durableId"));
-                itemJson.put("name",   raw_items.getJSONObject(i).get("title"));
-                itemJson.put("description",   raw_items.getJSONObject(i).get("description"));
-                itemJson.put("tags", raw_items.getJSONObject(i).get("tags"));
-                itemJson.put("thumbnail_image", raw_items.getJSONObject(i).getJSONArray("clips").getJSONObject(0).getJSONArray("encodings").getJSONObject(0).get("thumbnailPublicURL"));
-                items.put(itemJson);
+                if (raw_items.getJSONObject(i).getJSONArray("clips").length()>0) {
+                    JSONObject itemJson = new JSONObject();
+                    itemJson.put("id", startVal + i);
+                    itemJson.put("rid", raw_items.getJSONObject(i).get("id"));
+                    itemJson.put("durableId", raw_items.getJSONObject(i).get("durableId"));
+                    itemJson.put("name", raw_items.getJSONObject(i).get("title"));
+                    itemJson.put("description", raw_items.getJSONObject(i).get("description"));
+                    itemJson.put("tags", raw_items.getJSONObject(i).get("tags"));
+                    itemJson.put("thumbnail_image", raw_items.getJSONObject(i).getJSONArray("clips").getJSONObject(0).getJSONArray("encodings").getJSONObject(0).get("thumbnailPublicURL"));
+
+                    JSONArray clipsArray = new JSONArray();
+
+                    for (int iClips = 0; iClips < raw_items.getJSONObject(i).getJSONArray("clips").length(); iClips++) {
+                        JSONObject clip = raw_items.getJSONObject(i).getJSONArray("clips").getJSONObject(iClips);
+                        JSONObject clipItem = new JSONObject();
+                        JSONArray encodingsArray = new JSONArray();
+                        for (int iEncodings = 0; iEncodings < clip.getJSONArray("encodings").length(); iEncodings++) {
+                            JSONObject encoding = clip.getJSONArray("encodings").getJSONObject(iEncodings);
+                            encodingsArray.put(encoding);
+                        }
+                        clipItem.put("encodings",encodingsArray);
+                        clipsArray.put(clipItem);
+                    }
+                    itemJson.put("clips",clipsArray);
+                    items.put(itemJson);
+                }
             }
             result.put("items",items);
             result.put("results", json.get("totalItems"));
@@ -282,6 +300,18 @@ public class ConfigurationUtil {
                             }
                             content.setProperty("tags", values);
                             content.setProperty("thumbnail_image", item.getString("thumbnail_image"));
+
+
+                            for (int iClips = 0; iClips < item.getJSONArray("clips").length(); iClips++) {
+                                JSONObject clip = item.getJSONArray("clips").getJSONObject(iClips);
+                                Node clipNode = content.addNode("clip-"+iClips);
+                                for (int iEncodings = 0; iEncodings < clip.getJSONArray("encodings").length(); iEncodings++) {
+                                    JSONObject encoding = clip.getJSONArray("encodings").getJSONObject(iEncodings);
+                                    Node size = clipNode.addNode("size-"+iEncodings);
+                                    size.setProperty("width",encoding.getLong("width"));
+                                    size.setProperty("height",encoding.getLong("height"));
+                                }
+                            }
                             content.save();
                             loggerVar.trace("Saved Node: " + path);
 
@@ -626,14 +656,14 @@ public class ConfigurationUtil {
             } else {
                 long lastExecTime = storageNode.getProperty("last_exec_cron").getLong();
                 long deltaTime = (lastExecTime - currentTime) / 3600000;
-                if (deltaTime > 12) {
+                if (deltaTime > 12 ) {
                     runCron = true;
                     loggerVar.debug("Storage older than 12hrs: " + deltaTime);
                 } else {
                     loggerVar.debug("Storage newer than 12hrs: " + deltaTime);
                 }
             }
-            if (runCron) {
+            if (runCron || override) {
                 cacheVideos();
                 cacheProducts();
                 cachePublications();
@@ -652,6 +682,94 @@ public class ConfigurationUtil {
                 session.logout();
             }
             if (repository != null) repository = null;
+        }
+        return result;
+    }
+    public static long getWidth(String durableId) {
+        return getWidth(durableId, 0);
+    }
+    public static long getWidth(String durableId, long height) {
+        SlingRepository repository = getSlingRepository();
+        ResourceResolver resourceResolver = null;
+        Session session = null;
+        long result = -1;
+        try {
+            loggerVar.trace("getWidth");
+            session = repository.loginAdministrative(null);
+            ResourceResolverFactory rrf = getResourceResolverFactory();
+            resourceResolver = rrf.getAdministrativeResourceResolver(null);
+            Node existingItem = session.getNode(getStoragePath());
+
+            String ActivatedPathQuery = "SELECT * FROM [cq:PageContent] AS s WHERE ISDESCENDANTNODE([/etc/storage/invodo/presentations]) AND s.content_type = 'presentation' AND CONTAINS(s.durableId,\"" + ResponseUtil.escapeXml(durableId).replaceAll("\"", "&quot;") + "\")";
+            loggerVar.trace("Search : " + ActivatedPathQuery);
+            Iterator<Resource> resIterator = resourceResolver.findResources(ActivatedPathQuery, Query.JCR_SQL2);
+            while (resIterator.hasNext()) {
+
+                Resource itemRes = resIterator.next();
+                Node video = itemRes.adaptTo(Node.class);
+                if (video.hasNode("clip-0") && video.getNode("clip-0").hasNode("size-0")) {
+                    Node size = video.getNode("clip-0").getNode("size-0");
+                    long clipwidth = size.getProperty("width").getLong();
+                    long clipheight = size.getProperty("height").getLong();
+                    if (height > 0) {
+                        result = clipwidth * height / clipheight;
+                    } else {
+                        result = clipwidth;
+                    }
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (session != null) {
+                session.logout();
+            }
+            if (repository != null) repository = null;
+
+        }
+        return result;
+    }
+    public static long getHeight(String durableId) {
+        return getHeight(durableId, 0);
+    }
+    public static long getHeight(String durableId, long width) {
+        SlingRepository repository = getSlingRepository();
+        ResourceResolver resourceResolver = null;
+        Session session = null;
+        long result = -1;
+        try {
+            loggerVar.trace("getHeight");
+            session = repository.loginAdministrative(null);
+            ResourceResolverFactory rrf = getResourceResolverFactory();
+            resourceResolver = rrf.getAdministrativeResourceResolver(null);
+            Node existingItem = session.getNode(getStoragePath());
+
+            String ActivatedPathQuery = "SELECT * FROM [cq:PageContent] AS s WHERE ISDESCENDANTNODE([/etc/storage/invodo/presentations]) AND s.content_type = 'presentation' AND CONTAINS(s.durableId,\"" + ResponseUtil.escapeXml(durableId).replaceAll("\"", "&quot;") + "\")";
+            loggerVar.trace("Search : " + ActivatedPathQuery);
+            Iterator<Resource> resIterator = resourceResolver.findResources(ActivatedPathQuery, Query.JCR_SQL2);
+            while (resIterator.hasNext()) {
+
+                Resource itemRes = resIterator.next();
+                Node video = itemRes.adaptTo(Node.class);
+                if (video.hasNode("clip-0") && video.getNode("clip-0").hasNode("size-0")) {
+                    Node size = video.getNode("clip-0").getNode("size-0");
+                    long clipwidth = size.getProperty("width").getLong();
+                    long clipheight = size.getProperty("height").getLong();
+                    if (width > 0) {
+                        result = clipheight * width / clipwidth;
+                    } else {
+                        result = clipheight;
+                    }
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (session != null) {
+                session.logout();
+            }
+            if (repository != null) repository = null;
+
         }
         return result;
     }

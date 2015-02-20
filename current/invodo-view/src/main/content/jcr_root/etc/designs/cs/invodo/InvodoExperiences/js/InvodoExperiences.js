@@ -23,6 +23,8 @@ invodoTools.init = function() {
                         if (item.type === "cta" ||  item.mode === "overlay") {
                             Invodo.Widget.add({podId: item.podId, widgetId:item.widgetId, mode:"overlay", type:"inplayer", chromelessmode:item.chromelessmode, listensTo:"cta"+index});
 	                        Invodo.Widget.add({podId: item.podId, widgetId:"cta"+index, type:"cta", chromelessmode:item.chromelessmode, parentDomId:item.parentDomId, data:item.data});
+                        } else if (item.type === "spin") {
+							Invodo.Widget.add({podId: item.podId, widgetId:item.widgetId, parentDomId:item.parentDomId, showControls:item.showControls, type:item.type});
                         } else {
                         	Invodo.Widget.add({podId: item.podId, widgetId:item.widgetId, mode:item.mode, type:item.type, chromelessmode:item.chromelessmode, parentDomId:item.parentDomId, autoplay:item.autoplay});
                         }
@@ -44,6 +46,10 @@ invodoTools.init = function() {
 
 invodoTools.addVideoCue = function(a_podId,a_widgetId,a_parentDomId,a_type, a_mode, a_chromeless, a_autoplay, a_data) {
     invodoTools.videos.push({podId:a_podId, widgetId:a_widgetId, parentDomId:a_parentDomId, type:a_type, mode:a_mode, autoplay:a_autoplay, chromelessmode:a_chromeless, data:a_data});
+}
+
+invodoTools.addSpinCue = function(a_podId,a_widgetId,a_parentDomId,a_type, a_introSpin, a_showControls) {
+    invodoTools.videos.push({podId:a_podId, widgetId:a_widgetId, parentDomId:a_parentDomId, type:a_type, introSpin:a_introSpin, showControls:a_showControls});
 }
 
 

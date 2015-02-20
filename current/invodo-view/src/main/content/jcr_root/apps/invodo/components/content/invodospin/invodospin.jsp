@@ -26,22 +26,8 @@
     UUID video_uuid = new UUID(64L,64L);
 	String VideoRandomID = new String(video_uuid.randomUUID().toString().replaceAll("-",""));
 
-	Image image = null;
-    String imageCTAData="/etc/designs/cs/invodo/InvodoExperiences/images/playbutton_black_64px.png";
-    if (currentNode.hasNode("ctaimage")) {
-        image = new Image(resourceResolver.getResource(currentNode.getNode("ctaimage").getPath()));
-        if (image.hasContent()) imageCTAData = resourceResolver.map(image.getPath()+".img.png"+ image.getSuffix());
-    }
 
-    String videoPlayer = properties.get("videoPlayer","");
-	String type = "embedded".equals(properties.get("mode","embedded")) ? "inplayer" : "cta";
-	long width = properties.get("width",-1);
-    long height = properties.get("height",-1);
-    if (width > 0 && !(height > 0)) {
-        height = ConfigurationUtil.getHeight(videoPlayer,width);
-    } else if (height > 0 && !(width > 0)) {
-        width = ConfigurationUtil.getWidth(videoPlayer,height);
-    }
+
 %>
 <cq:includeClientLib js="ivd.InvodoExperiences-custom"/>
 
@@ -52,18 +38,18 @@
     invodoTools.pageName="<%=currentPage.getName()%>";
     invodoTools.pageType="<%=currentPage.getTemplate().getName()%>";
     //a_podId, a_widgetId, a_parentDomId, a_type, a_mode, a_chromeless, a_autoplay
-    invodoTools.addVideoCue("<%=videoPlayer%>","player1-<%=VideoRandomID%>","<%=VideoRandomID%>","<%=type%>","<%=properties.get("mode","embedded")%>","<%=properties.get("chromelessmode",false)%>",<%=properties.get("autoplay",false)%>,"<%=imageCTAData%>");
+    invodoTools.addSpinCue("<%=properties.get("videoPlayer","")%>","player1-<%=VideoRandomID%>","<%=VideoRandomID%>","spin",<%=properties.get("introSpin",false)%>,<%=properties.get("showControls",false)%>);
 
  </script>
 
 <%
-	if ("cta".equals(properties.get("type","inplayer")) || "overlay".equals(properties.get("mode","embedded"))) {
+	if ("overlay".equals(properties.get("mode","embedded"))) {
 %>
 	<p id="<%=VideoRandomID%>"></p>
 <%
     } else {
 %>
-	<div id="<%=VideoRandomID%>" <% if (width > 0 && height > 0) {%>style="height:<%=height%>px;width:<%=width%>px;"<% } %>></div>
+	<div id="<%=VideoRandomID%>" style="height:<%=properties.get("height","270")%>px;width:<%=properties.get("width","480")%>px;"></div>
 <%
     }
 %>

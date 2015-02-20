@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Dialog"
+    title="Dialog"
+    xtype="dialog">
+    <items jcr:primaryType="cq:TabPanel">
+        <items jcr:primaryType="cq:WidgetCollection">
+            <tab1
+                jcr:primaryType="cq:Panel"
+                title="General">
+                <items jcr:primaryType="cq:WidgetCollection">
+                    <comboPlayer
+                        jcr:primaryType="cq:Widget"
+                        allowBlank="false"
+                        fieldDescription=""
+                        fieldLabel="Spin ID:"
+                        fieldSubLabel=""
+                        name="./videoPlayer"
+                        xtype="textfield"/>
+                    <player_config
+                        jcr:primaryType="cq:Widget"
+                        collapsed="{Boolean}false"
+                        collapsible="{Boolean}false"
+                        xtype="dialogfieldset">
+                        <items jcr:primaryType="cq:WidgetCollection">
+                            <introSpin
+                                jcr:primaryType="cq:Widget"
+                                fieldLabel="Intro Spin"
+                                fieldValue="off"
+                                name="./introSpin"
+                                type="checkbox"
+                                xtype="selection"/>
+                            <showControls
+                                jcr:primaryType="cq:Widget"
+                                fieldLabel="Show Controls"
+                                fieldValue="off"
+                                name="./showControls"
+                                type="checkbox"
+                                xtype="selection"/>
+                        </items>
+                    </player_config>
+                </items>
+            </tab1>
+        </items>
+    </items>
+</jcr:root>

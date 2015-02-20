@@ -29,27 +29,6 @@
                         collapsible="{Boolean}false"
                         xtype="dialogfieldset">
                         <items jcr:primaryType="cq:WidgetCollection">
-                            <type
-                                jcr:primaryType="cq:Widget"
-                                fieldLabel="Type"
-                                name="./type"
-                                type="select"
-                                xtype="selection">
-                                <options jcr:primaryType="cq:WidgetCollection">
-                                    <inplayer
-                                        jcr:primaryType="nt:unstructured"
-                                        text="In Player"
-                                        value="inplayer"/>
-                                    <cta
-                                        jcr:primaryType="nt:unstructured"
-                                        text="CTA"
-                                        value="cta"/>
-                                    <spin
-                                        jcr:primaryType="nt:unstructured"
-                                        text="Spin"
-                                        value="spin"/>
-                                </options>
-                            </type>
                             <mode
                                 jcr:primaryType="cq:Widget"
                                 fieldLabel="Mode"
@@ -61,7 +40,7 @@
                                         jcr:primaryType="nt:unstructured"
                                         text="Embedded"
                                         value="embedded"/>
-                                    <spin
+                                    <overlay
                                         jcr:primaryType="nt:unstructured"
                                         text="Overlay"
                                         value="overlay"/>
