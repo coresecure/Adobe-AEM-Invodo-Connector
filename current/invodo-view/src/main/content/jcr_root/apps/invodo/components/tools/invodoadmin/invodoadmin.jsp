@@ -48,27 +48,18 @@ String xtype = properties.get("xtype", "");
 <head>
     <meta http-equiv="Content-Type" content="text/html; utf-8" />
     <cq:includeClientLib categories="cq.wcm.edit" />
-	<cq:includeClientLib css="cs.invodo-bootstrap" />
-    <cq:includeClientLib css="cs.invodo-admin-api" />
+    <cq:includeClientLib css="cs.invodo-console" />
 
-    <cq:includeClientLib js="cs.invodo-bootstrap" />
-    <cq:includeClientLib js="cs.invodo-admin-api" />
+    <cq:includeClientLib js="cs.invodo-console" />
     <title>Invodo - Media API Application</title>
-    <script type="text/javascript">
-            CQ.Ext.onReady(function() {
-                var debug = <%= debug %>;
-                var extensionString = <%= extensionString %>;
-                var fct = function() {
-                    CQ.Util.build("<%= slingRequest.getContextPath() %><%= currentNode.getPath() %>.infinity.json", null, null, debug, extensionString);
-                };
-                window.setTimeout(fct, 1);
-            });
-        </script>
+
 </head>
 
 <body>
     <div id="CQ"></div>
-    <iframe id="aeminvodo" src="https://my.invodo.com/home/shelby.html#login:" width="100%" height="100%"/>
+    <div id="invodo">
+        <iframe id="aeminvodo" src="https://my.invodo.com/home/shelby.html#login:" width="100%" height="100%"/>
+    </div>
 </body>
 
 </html>

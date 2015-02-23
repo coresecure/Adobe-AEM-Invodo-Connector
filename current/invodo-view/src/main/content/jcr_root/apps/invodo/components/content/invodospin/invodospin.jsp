@@ -38,18 +38,8 @@
     invodoTools.pageName="<%=currentPage.getName()%>";
     invodoTools.pageType="<%=currentPage.getTemplate().getName()%>";
     //a_podId, a_widgetId, a_parentDomId, a_type, a_mode, a_chromeless, a_autoplay
-    invodoTools.addSpinCue("<%=properties.get("videoPlayer","")%>","player1-<%=VideoRandomID%>","<%=VideoRandomID%>","spin",<%=properties.get("introSpin",false)%>,<%=properties.get("showControls",false)%>);
+    invodoTools.addSpinCue("<%=properties.get("videoPlayer","")%>","player1-<%=VideoRandomID%>","<%=VideoRandomID%>","spin",<%=properties.get("introSpin",false)%>,<%=properties.get("showControls",false)%>,<%=properties.get("width","480")%>,<%=properties.get("height","270")%>);
 
  </script>
 
-<%
-	if ("overlay".equals(properties.get("mode","embedded"))) {
-%>
-	<p id="<%=VideoRandomID%>"></p>
-<%
-    } else {
-%>
-	<div id="<%=VideoRandomID%>" style="height:<%=properties.get("height","270")%>px;width:<%=properties.get("width","480")%>px;"></div>
-<%
-    }
-%>
+<div class="invodo-spin-container" id="<%=VideoRandomID%>"></div>

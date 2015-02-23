@@ -70,6 +70,27 @@
                                 xtype="selection"/>
                         </items>
                     </player_config>
+                    <product_player_config
+                        jcr:primaryType="cq:Widget"
+                        collapsed="{Boolean}false"
+                        collapsible="{Boolean}false"
+                        xtype="dialogfieldset">
+                        <items jcr:primaryType="cq:WidgetCollection">
+                            <usempd
+                                jcr:primaryType="cq:Widget"
+                                fieldLabel="Use MPD"
+                                fieldValue="off"
+                                name="./usempd"
+                                type="checkbox"
+                                xtype="selection"/>
+                            <mpdproperty
+                                jcr:primaryType="cq:Widget"
+                                fieldDescription="Javascript variable that contains the MPD value (ex. $.mpd - Leave empty if you set the &quot;mpd&quot; in the page properties configuration)"
+                                fieldLabel="MPD Property"
+                                name="./mpdproperty"
+                                xtype="textfield"/>
+                        </items>
+                    </product_player_config>
                 </items>
             </tab1>
             <ctaImage

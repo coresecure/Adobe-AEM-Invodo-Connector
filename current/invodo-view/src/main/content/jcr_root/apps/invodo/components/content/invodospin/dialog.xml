@@ -39,6 +39,12 @@
                                 xtype="selection"/>
                         </items>
                     </player_config>
+                    <size
+                        jcr:primaryType="cq:Widget"
+                        fieldLabel="Size"
+                        heightParameter="./height"
+                        widthParameter="./width"
+                        xtype="sizefield"/>
                 </items>
             </tab1>
         </items>

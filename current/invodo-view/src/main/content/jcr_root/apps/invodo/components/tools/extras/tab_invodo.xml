@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Panel"
+    title="Invodo Configuration">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <product
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <mpd
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Product (MPD)"
+                    name="./mpd"
+                    xtype="textfield"/>
+            </items>
+        </product>
+        <page
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <pageName
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Page Name"
+                    name="./invodo_pageName"
+                    xtype="textfield"/>
+                <pageType
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Page Type"
+                    name="./invodo_pageType"
+                    xtype="textfield"/>
+            </items>
+        </page>
+    </items>
+</jcr:root>

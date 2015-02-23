@@ -42,6 +42,13 @@
     } else if (height > 0 && !(width > 0)) {
         width = ConfigurationUtil.getWidth(videoPlayer,height);
     }
+	//Get the mpd from the page properties.
+	boolean usempd = properties.get("usempd",false);
+	String mpdProperty = properties.get("mpdproperty","").trim();
+	String mpdPageProperty =currentPage.getProperties().get("mpd","").trim();
+	if (usempd && mpdProperty.isEmpty() && !mpdPageProperty.isEmpty()) {
+    	videoPlayer = mpdPageProperty;
+	}
 %>
 <cq:includeClientLib js="ivd.InvodoExperiences-custom"/>
 
@@ -49,21 +56,12 @@
 
     var filepath = "<%=ConfigurationUtil.getJSPath()%>";
 	invodoTools.filepath=filepath;
-    invodoTools.pageName="<%=currentPage.getName()%>";
-    invodoTools.pageType="<%=currentPage.getTemplate().getName()%>";
+    invodoTools.pageName="<%=currentPage.getProperties().get("invodo_pageName",currentPage.getName())%>";
+    invodoTools.pageType="<%=currentPage.getProperties().get("pageType",currentPage.getTemplate().getName())%>";
     //a_podId, a_widgetId, a_parentDomId, a_type, a_mode, a_chromeless, a_autoplay
-    invodoTools.addVideoCue("<%=videoPlayer%>","player1-<%=VideoRandomID%>","<%=VideoRandomID%>","<%=type%>","<%=properties.get("mode","embedded")%>","<%=properties.get("chromelessmode",false)%>",<%=properties.get("autoplay",false)%>,"<%=imageCTAData%>");
+    invodoTools.addVideoCue(<%if (usempd && !mpdProperty.isEmpty()) {%><%=mpdProperty%> <%} else {%> "<%=videoPlayer%>" <% } %>,"player1-<%=VideoRandomID%>","<%=VideoRandomID%>","<%=type%>","<%=properties.get("mode","embedded")%>","<%=properties.get("chromelessmode",false)%>",<%=properties.get("autoplay",false)%>,"<%=imageCTAData%>",<%=usempd && (!mpdProperty.isEmpty() || !mpdPageProperty.isEmpty())%>,<%=width%>,<%=height%>);
 
  </script>
 
-<%
-	if ("cta".equals(properties.get("type","inplayer")) || "overlay".equals(properties.get("mode","embedded"))) {
-%>
-	<p id="<%=VideoRandomID%>"></p>
-<%
-    } else {
-%>
-	<div id="<%=VideoRandomID%>" <% if (width > 0 && height > 0) {%>style="height:<%=height%>px;width:<%=width%>px;"<% } %>></div>
-<%
-    }
-%>
+
+	<div class="invodo-video-container" id="<%=VideoRandomID%>"></div>
