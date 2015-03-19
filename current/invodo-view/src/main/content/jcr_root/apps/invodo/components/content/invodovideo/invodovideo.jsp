@@ -1,11 +1,11 @@
 <%
-/*    
-    Adobe CQ5 Invodo Connector  
-    
-    Copyright (C) 2011 Coresecure Inc.
-        
+/*
+    Adobe CQ5 Invodo Connector
+
+    Copyright (C) 2015 Coresecure Inc.
+
         Authors:    Alessandro Bonfatti
-        
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -25,6 +25,7 @@
 <%
     UUID video_uuid = new UUID(64L,64L);
 	String VideoRandomID = new String(video_uuid.randomUUID().toString().replaceAll("-",""));
+	String selection_mode= properties.get("selection_mode","");
 
 	Image image = null;
     String imageCTAData="/etc/designs/cs/invodo/InvodoExperiences/images/playbutton_black_64px.png";
@@ -33,7 +34,7 @@
         if (image.hasContent()) imageCTAData = resourceResolver.map(image.getPath()+".img.png"+ image.getSuffix());
     }
 
-    String videoPlayer = properties.get("videoPlayer","");
+    String videoPlayer = "";
 	String type = "embedded".equals(properties.get("mode","embedded")) ? "inplayer" : "cta";
 	long width = properties.get("width",-1);
     long height = properties.get("height",-1);
@@ -42,13 +43,29 @@
     } else if (height > 0 && !(width > 0)) {
         width = ConfigurationUtil.getWidth(videoPlayer,height);
     }
-	//Get the mpd from the page properties.
-	boolean usempd = properties.get("usempd",false);
-	String mpdProperty = properties.get("mpdproperty","").trim();
-	String mpdPageProperty =currentPage.getProperties().get("mpd","").trim();
-	if (usempd && mpdProperty.isEmpty() && !mpdPageProperty.isEmpty()) {
-    	videoPlayer = mpdPageProperty;
-	}
+
+	if("manual".equals(selection_mode)){
+        videoPlayer = properties.get("videoPlayer","");
+    } else if ("mpd".equals(selection_mode)){
+        //Get the mpd from the page properties.
+        String mpdProperty = properties.get("mpdproperty","").trim();
+        String mpdPageProperty =currentPage.getProperties().get("mpd","").trim();
+        if (!mpdProperty.isEmpty()) {
+            videoPlayer = mpdProperty;
+        } else if (!mpdPageProperty.isEmpty()) {
+			videoPlayer = mpdPageProperty;
+        }
+    } else if ("refid".equals(selection_mode)){
+        //Get the mpd from the page properties.
+        String refidproperty = properties.get("refidproperty","").trim();
+        String refidPageProperty =currentPage.getProperties().get("refid","").trim();
+        if (!refidproperty.isEmpty()) {
+            videoPlayer = refidproperty;
+        } else if (!refidPageProperty.isEmpty()) {
+			videoPlayer = refidPageProperty;
+        }
+    } 
+
 %>
 <cq:includeClientLib js="ivd.InvodoExperiences-custom"/>
 
@@ -57,9 +74,8 @@
     var filepath = "<%=ConfigurationUtil.getJSPath()%>";
 	invodoTools.filepath=filepath;
     invodoTools.pageName="<%=currentPage.getProperties().get("invodo_pageName",currentPage.getName())%>";
-    invodoTools.pageType="<%=currentPage.getProperties().get("pageType",currentPage.getTemplate().getName())%>";
-    //a_podId, a_widgetId, a_parentDomId, a_type, a_mode, a_chromeless, a_autoplay
-    invodoTools.addVideoCue(<%if (usempd && !mpdProperty.isEmpty()) {%><%=mpdProperty%> <%} else {%> "<%=videoPlayer%>" <% } %>,"player1-<%=VideoRandomID%>","<%=VideoRandomID%>","<%=type%>","<%=properties.get("mode","embedded")%>","<%=properties.get("chromelessmode",false)%>",<%=properties.get("autoplay",false)%>,"<%=imageCTAData%>",<%=usempd && (!mpdProperty.isEmpty() || !mpdPageProperty.isEmpty())%>,<%=width%>,<%=height%>);
+    invodoTools.pageType="<%=currentPage.getProperties().get("pageType","product")%>";
+    invodoTools.addVideoCue("<%=videoPlayer%>","player1-<%=VideoRandomID%>","<%=VideoRandomID%>","<%=type%>","<%=properties.get("mode","embedded")%>","<%=properties.get("chromelessmode",false)%>",<%=properties.get("autoplay",false)%>,"<%=imageCTAData%>","<%=selection_mode%>",<%=width%>,<%=height%>);
 
  </script>
 

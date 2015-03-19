@@ -31,8 +31,27 @@
                     jcr:primaryType="cq:Widget"
                     fieldLabel="Page Type"
                     name="./invodo_pageType"
-                    xtype="textfield"/>
+                    options="/bin/invodo/pagetypes.json"
+                    optionsQTipField="name"
+                    optionsRoot="items"
+                    optionsTextField="name"
+                    optionsValueField="value"
+                    type="select"
+                    xtype="selection"/>
             </items>
         </page>
+        <refid
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <refid
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Ref ID"
+                    name="./refid"
+                    xtype="textfield"/>
+            </items>
+        </refid>
     </items>
 </jcr:root>

@@ -1,151 +1,217 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
     jcr:primaryType="cq:Dialog"
+    manageTabs="function(tab,noSwitch){var tabs=['prop','manual','mpd','refid'];var index=tabs.indexOf(tab);if(index==-1) return;for(var i=1;i&lt;tabs.length;i++){if(index==i){this.unhideTabStripItem(i);}else{this.hideTabStripItem(i);}}this.doLayout();if(!noSwitch)this.activate(index);}"
     title="Dialog"
-    xtype="dialog">
-    <items jcr:primaryType="cq:TabPanel">
-        <items jcr:primaryType="cq:WidgetCollection">
-            <tab1
-                jcr:primaryType="cq:Panel"
-                title="General">
-                <items jcr:primaryType="cq:WidgetCollection">
-                    <comboPlayer
-                        jcr:primaryType="cq:Widget"
-                        allowBlank="false"
-                        fieldDescription=""
-                        fieldLabel="Video:"
-                        fieldSubLabel=""
-                        hiddenName="./videoPlayer"
-                        xtype="InvodoCombo"/>
-                    <size
-                        jcr:primaryType="cq:Widget"
-                        fieldLabel="Size"
-                        heightParameter="./height"
-                        widthParameter="./width"
-                        xtype="sizefield"/>
-                    <player_type
-                        jcr:primaryType="cq:Widget"
-                        collapsed="{Boolean}false"
-                        collapsible="{Boolean}false"
-                        xtype="dialogfieldset">
-                        <items jcr:primaryType="cq:WidgetCollection">
-                            <mode
-                                jcr:primaryType="cq:Widget"
-                                fieldLabel="Mode"
-                                name="./mode"
-                                type="select"
-                                xtype="selection">
-                                <options jcr:primaryType="cq:WidgetCollection">
-                                    <embedded
-                                        jcr:primaryType="nt:unstructured"
-                                        text="Embedded"
-                                        value="embedded"/>
-                                    <overlay
-                                        jcr:primaryType="nt:unstructured"
-                                        text="Overlay"
-                                        value="overlay"/>
-                                </options>
-                            </mode>
-                        </items>
-                    </player_type>
-                    <player_config
-                        jcr:primaryType="cq:Widget"
-                        collapsed="{Boolean}false"
-                        collapsible="{Boolean}false"
-                        xtype="dialogfieldset">
-                        <items jcr:primaryType="cq:WidgetCollection">
-                            <chromelessmode
-                                jcr:primaryType="cq:Widget"
-                                fieldLabel="Chromeless Mode"
-                                fieldValue="off"
-                                name="./isChromelessMode"
-                                type="checkbox"
-                                xtype="selection"/>
-                            <autoplay
-                                jcr:primaryType="cq:Widget"
-                                fieldLabel="Autoplay"
-                                fieldValue="off"
-                                name="./autoplay"
-                                type="checkbox"
-                                xtype="selection"/>
-                        </items>
-                    </player_config>
-                    <product_player_config
-                        jcr:primaryType="cq:Widget"
-                        collapsed="{Boolean}false"
-                        collapsible="{Boolean}false"
-                        xtype="dialogfieldset">
-                        <items jcr:primaryType="cq:WidgetCollection">
-                            <usempd
-                                jcr:primaryType="cq:Widget"
-                                fieldLabel="Use MPD"
-                                fieldValue="off"
-                                name="./usempd"
-                                type="checkbox"
-                                xtype="selection"/>
-                            <mpdproperty
-                                jcr:primaryType="cq:Widget"
-                                fieldDescription="Javascript variable that contains the MPD value (ex. $.mpd - Leave empty if you set the &quot;mpd&quot; in the page properties configuration)"
-                                fieldLabel="MPD Property"
-                                name="./mpdproperty"
-                                xtype="textfield"/>
-                        </items>
-                    </product_player_config>
-                </items>
-            </tab1>
-            <ctaImage
-                jcr:primaryType="cq:Widget"
-                cropParameter="./ctaimage/imageCrop"
-                ddGroups="[media]"
-                fileNameParameter="./ctaimage/fileName"
-                fileReferenceParameter="./ctaimage/fileReference"
-                mapParameter="./ctaimage/imageMap"
-                name="./ctaimage/file"
-                requestSuffix="/ctaimage.img.png"
-                rotateParameter="./ctaimage/imageRotate"
-                title="Image"
-                xtype="html5smartimage"/>
-            <advanced
-                jcr:primaryType="cq:Widget"
-                title="Advanced CTA Image Settings"
-                xtype="panel">
-                <items jcr:primaryType="cq:WidgetCollection">
-                    <title
-                        jcr:primaryType="cq:Widget"
-                        fieldLabel="Title"
-                        name="./ctaimage/jcr:title"
-                        xtype="textfield"/>
-                    <alt
-                        jcr:primaryType="cq:Widget"
-                        fieldDescription="(leave empty to use the title defined above)"
-                        fieldLabel="Alt Text"
-                        name="./ctaimage/alt"
-                        xtype="textfield"/>
-                    <linkURL
-                        jcr:primaryType="cq:Widget"
-                        fieldDescription="Drop files or pages from the Content Finder"
-                        fieldLabel="Link to"
-                        name="./ctaimage/linkURL"
-                        xtype="pathfield"/>
-                    <description
-                        jcr:primaryType="cq:Widget"
-                        fieldLabel="Description"
-                        name="./ctaimage/jcr:description"
-                        xtype="textarea"/>
-                    <size
-                        jcr:primaryType="cq:Widget"
-                        fieldLabel="Size"
-                        heightParameter="./ctaimage/height"
-                        widthParameter="./ctaimage/width"
-                        xtype="sizefield"/>
-                    <resType
-                        jcr:primaryType="cq:Widget"
-                        ignoreData="{Boolean}true"
-                        name="./ctaimage/sling:resourceType"
-                        value="foundation/components/image"
-                        xtype="hidden"/>
-                </items>
-            </advanced>
-        </items>
+    xtype="tabpanel">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <tab1
+            jcr:primaryType="cq:Panel"
+            title="General">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <selectionmode
+                    jcr:primaryType="cq:Widget"
+                    allowBlank="false"
+                    fieldLabel="Selection Mode"
+                    name="./selection_mode"
+                    type="select"
+                    xtype="selection">
+                    <options jcr:primaryType="cq:WidgetCollection">
+                        <manual
+                            jcr:primaryType="nt:unstructured"
+                            text="Manual Selection"
+                            value="manual"/>
+                        <mpd
+                            jcr:primaryType="nt:unstructured"
+                            text="MPD"
+                            value="mpd"/>
+                        <refid
+                            jcr:primaryType="nt:unstructured"
+                            text="RefID"
+                            value="refid"/>
+                    </options>
+                    <listeners
+                        jcr:primaryType="nt:unstructured"
+                        loadcontent="function(){this.findParentByType('tabpanel').manageTabs(this.getValue(),true);}"
+                        selectionchanged="function(box,value){box.findParentByType('tabpanel').manageTabs(value);}"/>
+                </selectionmode>
+                <player_type
+                    jcr:primaryType="cq:Widget"
+                    collapsed="{Boolean}false"
+                    collapsible="{Boolean}false"
+                    xtype="dialogfieldset">
+                    <items jcr:primaryType="cq:WidgetCollection">
+                        <mode
+                            jcr:primaryType="cq:Widget"
+                            fieldLabel="Mode"
+                            name="./mode"
+                            type="select"
+                            xtype="selection">
+                            <options jcr:primaryType="cq:WidgetCollection">
+                                <embedded
+                                    jcr:primaryType="nt:unstructured"
+                                    text="Embedded"
+                                    value="embedded"/>
+                                <overlay
+                                    jcr:primaryType="nt:unstructured"
+                                    text="Overlay"
+                                    value="overlay"/>
+                            </options>
+                        </mode>
+                        <size
+                            jcr:primaryType="cq:Widget"
+                            fieldLabel="Widget Size"
+                            heightParameter="./height"
+                            widthParameter="./width"
+                            xtype="sizefield"/>
+                    </items>
+                </player_type>
+                <player_config
+                    jcr:primaryType="cq:Widget"
+                    collapsed="{Boolean}false"
+                    collapsible="{Boolean}false"
+                    xtype="dialogfieldset">
+                    <items jcr:primaryType="cq:WidgetCollection">
+                        <chromelessmode
+                            jcr:primaryType="cq:Widget"
+                            fieldLabel="Chromeless Mode"
+                            fieldValue="off"
+                            name="./isChromelessMode"
+                            type="checkbox"
+                            xtype="selection"/>
+                        <autoplay
+                            jcr:primaryType="cq:Widget"
+                            fieldLabel="Autoplay"
+                            fieldValue="off"
+                            name="./autoplay"
+                            type="checkbox"
+                            xtype="selection"/>
+                    </items>
+                </player_config>
+            </items>
+        </tab1>
+        <manual
+            jcr:primaryType="cq:Panel"
+            title="Manual Video Selection">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <video_player_config
+                    jcr:primaryType="cq:Widget"
+                    collapsed="{Boolean}false"
+                    collapsible="{Boolean}false"
+                    xtype="dialogfieldset">
+                    <items jcr:primaryType="cq:WidgetCollection">
+                        <comboPlayer
+                            jcr:primaryType="cq:Widget"
+                            fieldDescription=""
+                            fieldLabel="Video:"
+                            fieldSubLabel=""
+                            hiddenName="./videoPlayer"
+                            xtype="InvodoCombo"/>
+                    </items>
+                </video_player_config>
+            </items>
+            <listeners
+                jcr:primaryType="nt:unstructured"
+                render="function() { this.findParentByType('tabpanel').hideTabStripItem(1); }"/>
+        </manual>
+        <mpd
+            jcr:primaryType="cq:Panel"
+            title="MPD Configuration">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <product_player_config
+                    jcr:primaryType="cq:Widget"
+                    collapsed="{Boolean}false"
+                    collapsible="{Boolean}false"
+                    xtype="dialogfieldset">
+                    <items jcr:primaryType="cq:WidgetCollection">
+                        <mpdproperty
+                            jcr:primaryType="cq:Widget"
+                            fieldDescription="Javascript variable that contains the MPD value (ex. $.mpd - Leave empty if you set the &quot;mpd&quot; in the page properties configuration)"
+                            fieldLabel="MPD Property"
+                            name="./mpdproperty"
+                            xtype="textfield"/>
+                    </items>
+                </product_player_config>
+            </items>
+            <listeners
+                jcr:primaryType="nt:unstructured"
+                render="function() { this.findParentByType('tabpanel').hideTabStripItem(2); }"/>
+        </mpd>
+        <refid
+            jcr:primaryType="cq:Panel"
+            title="Ref ID Configuration">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <refid_player_config
+                    jcr:primaryType="cq:Widget"
+                    collapsed="{Boolean}false"
+                    collapsible="{Boolean}false"
+                    xtype="dialogfieldset">
+                    <items jcr:primaryType="cq:WidgetCollection">
+                        <refidproperty
+                            jcr:primaryType="cq:Widget"
+                            fieldDescription="Javascript variable that contains the RefID value (ex. $.RefID - Leave empty if you set the &quot;RefID&quot; in the page properties configuration)"
+                            fieldLabel="RefID Property"
+                            name="./refidproperty"
+                            xtype="textfield"/>
+                    </items>
+                </refid_player_config>
+            </items>
+            <listeners
+                jcr:primaryType="nt:unstructured"
+                render="function() { this.findParentByType('tabpanel').hideTabStripItem(3); }"/>
+        </refid>
+        <ctaImage
+            jcr:primaryType="cq:Widget"
+            cropParameter="./ctaimage/imageCrop"
+            ddGroups="[media]"
+            fileNameParameter="./ctaimage/fileName"
+            fileReferenceParameter="./ctaimage/fileReference"
+            mapParameter="./ctaimage/imageMap"
+            name="./ctaimage/file"
+            requestSuffix="/ctaimage.img.png"
+            rotateParameter="./ctaimage/imageRotate"
+            title="Image"
+            xtype="html5smartimage"/>
+        <advanced
+            jcr:primaryType="cq:Widget"
+            title="Advanced CTA Image Settings"
+            xtype="panel">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <title
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Title"
+                    name="./ctaimage/jcr:title"
+                    xtype="textfield"/>
+                <alt
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="(leave empty to use the title defined above)"
+                    fieldLabel="Alt Text"
+                    name="./ctaimage/alt"
+                    xtype="textfield"/>
+                <linkURL
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Drop files or pages from the Content Finder"
+                    fieldLabel="Link to"
+                    name="./ctaimage/linkURL"
+                    xtype="pathfield"/>
+                <description
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Description"
+                    name="./ctaimage/jcr:description"
+                    xtype="textarea"/>
+                <size
+                    jcr:primaryType="cq:Widget"
+                    fieldLabel="Size"
+                    heightParameter="./ctaimage/height"
+                    widthParameter="./ctaimage/width"
+                    xtype="sizefield"/>
+                <resType
+                    jcr:primaryType="cq:Widget"
+                    ignoreData="{Boolean}true"
+                    name="./ctaimage/sling:resourceType"
+                    value="foundation/components/image"
+                    xtype="hidden"/>
+            </items>
+        </advanced>
     </items>
 </jcr:root>

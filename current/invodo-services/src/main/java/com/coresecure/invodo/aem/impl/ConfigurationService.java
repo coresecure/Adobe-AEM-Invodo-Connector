@@ -1,3 +1,23 @@
+/*
+    Adobe CQ5 Invodo Connector
+
+    Copyright (C) 2015 Coresecure Inc.
+
+        Authors:    Alessandro Bonfatti
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package com.coresecure.invodo.aem.impl;
 
 import com.coresecure.invodo.aem.ConfigurationUtil;
@@ -28,7 +48,8 @@ import java.io.Serializable;
         @Property(name="is_cron_active", label="CRON Enable", description="Enable CRON", boolValue=false),
         @Property(name="cron_scheduler", label="CRON Scheduler", description="Scheduler CRON (The minimum refresh rate is 12 minutes)", value="0 5 0 ? * SUN"),
         @Property(name="is_admin_allowed", label="Admin can refresh data", description="Allow AEM 'admin' user to refresh Invodo data", boolValue=false),
-        @Property(name="refresher_groups", label="Refresher Groups", description="Groups that are allowed to refresh Invodo data", value={"",""})
+        @Property(name="refresher_groups", label="Refresher Groups", description="Groups that are allowed to refresh Invodo data", value={"",""}),
+        @Property(name="pageTypes", label="Page types", description="Allowed Page types", value={"product","category","home","blog","other"})
 })
 
 
@@ -119,6 +140,22 @@ public class ConfigurationService implements com.coresecure.invodo.aem.Configura
 
     public List<String> getRefresherGroupsList() {
         return Arrays.asList(getRefresherGroups());
+    }
+    public String[] getPagetypes() {
+        Object p =  getProperties().get("pageTypes");
+        if( p == null) return new String[0];
+        if( p instanceof String && ((String) p).trim().length()>0) {
+            return new String[] { ((String) p).trim() };
+        }
+
+        if( p instanceof String[] ) {
+            return cleanStringArray((String[]) p);
+        }
+        return new String[0];
+    }
+
+    public List<String> getPagetypesList() {
+        return Arrays.asList(getPagetypes());
     }
 
     public Boolean isGroupAllowed(String groupName){
