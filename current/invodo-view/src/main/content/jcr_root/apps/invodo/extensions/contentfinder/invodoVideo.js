@@ -87,7 +87,26 @@
                 "itemSelector": CQ.wcm.ContentFinderTab.DETAILS_ITEMSELECTOR
             },
             "tbar": [
-                CQ.wcm.ContentFinderTab.REFRESH_BUTTON,"->"
+                CQ.wcm.ContentFinderTab.REFRESH_BUTTON,"->",
+                {
+                    id:"invodorefreshbutton",
+                    text: "Refresh Cache",
+                    handler: function(item) {
+                        var url= CQ.shared.HTTP.getContextPath() +'/bin/invodo/refresh.json';
+                       	$("#"+item.id+" button").text("Loading...");
+                        $.getJSON( "/bin/invodo/refresh.json", function( data ) {
+							$("#"+item.id+" button").text("Refresh Cache");
+                        });
+                   	},
+                    listeners: { "afterrender":	function(item){
+                        			$.getJSON( "/bin/invodo/refresh.json?checkuser=1", function( data ) {
+                                        if(!data.is_authorized) {
+                                            $("#"+item.id).hide();
+                                        }
+                                    });
+                    			  }
+                               }
+                }
             ]
         },{
             "url": "/bin/invodo/list.sidekick.json"

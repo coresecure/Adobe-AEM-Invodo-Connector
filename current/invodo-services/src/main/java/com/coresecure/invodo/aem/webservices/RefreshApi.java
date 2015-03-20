@@ -55,12 +55,44 @@ public class RefreshApi extends SlingAllMethodsServlet {
                           final SlingHttpServletResponse response) throws ServletException,
             IOException {
 
-        api(request, response);
-
+        if (request.getParameter("checkuser") != null && "1".equals(request.getParameter("checkuser"))) {
+            authcheck(request, response);
+        } else {
+            api(request, response);
+        }
 
 
     }
 
+    public void authcheck(final SlingHttpServletRequest request,
+                    final SlingHttpServletResponse response) throws ServletException,
+            IOException {
+        PrintWriter outWriter = response.getWriter();
+        response.setContentType("application/json");
+        JSONObject root = new JSONObject();
+
+
+        int requestedAPI = 0;
+        String requestedToken="";
+        boolean is_authorized = false;
+        try {
+            Session session = request.getResourceResolver().adaptTo(Session.class);
+            UserManager userManager = request.getResourceResolver().adaptTo(UserManager.class);
+                /* to get the current user */
+            Authorizable auth = userManager.getAuthorizable(session.getUserID());
+            if (auth != null ) {
+                if ("admin".equals(auth.getID()) && ConfigurationUtil.isAdminRefreshAllowed()){
+                    is_authorized = true;
+                }
+            }
+            root.put("is_authorized",is_authorized);
+            response.getWriter().write(root.toString());
+        } catch (Exception e) {
+            response.getWriter().write("{\"is_authorized\":false}");
+        }
+
+
+    }
 
     public void api(final SlingHttpServletRequest request,
                     final SlingHttpServletResponse response) throws ServletException,
@@ -105,8 +137,11 @@ public class RefreshApi extends SlingAllMethodsServlet {
     protected void doGet(final SlingHttpServletRequest request,
                          final SlingHttpServletResponse response) throws ServletException,
             IOException {
-        api(request, response);
-
+        if (request.getParameter("checkuser") != null && "1".equals(request.getParameter("checkuser"))) {
+            authcheck(request, response);
+        } else {
+            api(request, response);
+        }
     }
 
 }
